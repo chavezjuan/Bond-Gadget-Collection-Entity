@@ -25,16 +25,17 @@ namespace JamesBondGadgetsEntity.Controllers
         // GET: Gadgets
         public ActionResult Index()
         {
-            
+            List<GadgetModel> gadgets = context.Gadgets.ToList();
 
-            return View("Index");
+            return View("Index", gadgets);
         }
 
         public ActionResult Details(int id)
         {
-            
+            GadgetModel gadget = context.Gadgets.SingleOrDefault(g => g.Id == id);
 
-            return View("Details");
+
+            return View("Details", gadget);
         }
 
         //Retorna um formulário de criação
@@ -51,9 +52,14 @@ namespace JamesBondGadgetsEntity.Controllers
 
         public ActionResult Delete(int id)
         {
-           
+            GadgetModel gadget = context.Gadgets.SingleOrDefault(g => g.Id == id);
 
-            return View("Index");
+            context.Entry(gadget).State = System.Data.Entity.EntityState.Deleted;
+
+            context.SaveChanges();
+
+
+            return Redirect("/Gadgets");
         }
 
         //Cria um item no banco
@@ -67,15 +73,20 @@ namespace JamesBondGadgetsEntity.Controllers
 
         public ActionResult SearchForm()
         {
+
             return View("SearchForm");
         }
 
         public ActionResult SearchForName(string searchPhrase)
         {
+            //Exemplo de LINQ statement
+            var gadgets = from g in context.Gadgets
+                          where g.Name.Contains(searchPhrase)
+                          select g;
         
 
 
-            return View("Index");
+            return View("Index", gadgets);
         }
     }
 }
