@@ -41,13 +41,14 @@ namespace JamesBondGadgetsEntity.Controllers
         //Retorna um formulário de criação
         public ActionResult Create()
         {
-            return View("GadgetForm");
+            return View("GadgetForm", new GadgetModel());
         }
 
         public ActionResult Edit(int id)
         {
-           
-            return View("GadgetForm");
+            GadgetModel gadget = context.Gadgets.SingleOrDefault(g => g.Id == id);
+
+            return View("GadgetForm", gadget);
         }
 
         public ActionResult Delete(int id)
@@ -65,8 +66,26 @@ namespace JamesBondGadgetsEntity.Controllers
         //Cria um item no banco
         public ActionResult ProcessCreate(GadgetModel gadgetModel)
         {
-            //Salvando no banco de dados
-            
+            //Salvando no banco de dados.Para Updates e Criar
+            GadgetModel gadget = context.Gadgets.SingleOrDefault(g => g.Id == gadgetModel.Id);
+
+            //edit
+            if (gadget != null)
+            {
+                gadget.Name = gadgetModel.Name;
+                gadget.Description = gadgetModel.Description;
+                gadget.AppearsIn = gadgetModel.AppearsIn;
+                gadget.WithThisActor = gadgetModel.WithThisActor;
+
+                context.SaveChanges();
+            } else
+            {
+                context.Gadgets.Add(gadgetModel);
+            }
+
+            context.SaveChanges();
+
+
 
             return View("Details", gadgetModel);
         }

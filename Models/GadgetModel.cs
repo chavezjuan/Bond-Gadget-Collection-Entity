@@ -29,10 +29,10 @@ namespace JamesBondGadgetsEntity.Models
         public GadgetModel()
         {
             Id = -1;
-            Name = "Nothing";
-            Description = "Nothing yet";
-            AppearsIn = "Nowhere";
-            WithThisActor = "With no one";
+            Name = "";
+            Description = "";
+            AppearsIn = "";
+            WithThisActor = "";
         }
 
         //Agora definimos o construtor com todos os parâmetros
